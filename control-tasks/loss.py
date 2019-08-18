@@ -5,7 +5,7 @@ import torch.nn as nn
 from tqdm import tqdm
 
 class CrossEntropyLoss(nn.Module):
-
+  """Custom cross-entropy loss"""
   def __init__(self, args):
     super(CrossEntropyLoss, self).__init__()
     tqdm.write('Constructing CrossEntropyLoss')
@@ -15,6 +15,19 @@ class CrossEntropyLoss(nn.Module):
   def forward(self, predictions, label_batch, length_batch):
     """
     Computes and returns CrossEntropyLoss.
+
+    Ignores all entries where label_batch=-1
+    Noralizes by the number of sentences in the batch.
+
+    Args: 
+      predictions: A pytorch batch of logits
+      label_batch: A pytorch batch of label indices
+      length_batch: A pytorch batch of sentence lengths
+
+    Returns:
+      A tuple of:
+        cross_entropy_loss: average loss in the batch
+        total_sents: number of sentences in the batch
     """
     if len(label_batch.size()) == 2:
       batchlen, seqlen, class_count = predictions.size()
@@ -22,12 +35,6 @@ class CrossEntropyLoss(nn.Module):
       predictions = predictions.view(batchlen*seqlen, class_count)
       label_batch = label_batch.view(batchlen*seqlen).long()
       cross_entropy_loss = self.pytorch_ce_loss(predictions, label_batch) / total_sents
-    #else:
-    #  batchlen, seqlen, seqlen = predictions.size()
-    #  total_sents = torch.sum((length_batch != 0)).float()
-    #  predictions = predictions.view(batchlen*seqlen*seqlen)
-    #  label_batch = label_batch.view(batchlen*seqlen*seqlen).float()
-    #  cross_entropy_loss = self.pytorch_bce_loss(predictions, label_batch)
     return cross_entropy_loss, total_sents
 
 

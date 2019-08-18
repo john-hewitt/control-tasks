@@ -243,6 +243,11 @@ class TwoWordLinearLabelProbe(Probe):
     return logits
 
 class TwoWordBilinearLabelProbe(Probe):
+  """ Computes a bilinear function of pairs of vectors.
+
+  For a batch of sentences, computes all n^2 pairs of scores
+  for each sentence in the batch.
+  """
   def __init__(self, args):
     print('Constructing TwoWordBilinearLabelProbe')
     super(TwoWordBilinearLabelProbe, self).__init__()
@@ -262,6 +267,20 @@ class TwoWordBilinearLabelProbe(Probe):
     print('Using intermediate size (hidden dim / rank) {}'.format(self.maximum_rank))
 
   def forward(self, batch):
+    """ Computes all n^2 pairs of attachment scores
+    for each sentence in a batch.
+
+    Computes h_i^TAh_j for all i,j
+
+    where A = LR, L in R^{model_dim x maximum_rank}; R in R^{maximum_rank x model_rank}
+    hence A is rank-constrained to maximum_rank.
+
+    Args:
+      batch: a batch of word representations of the shape
+        (batch_size, max_seq_len, representation_dim)
+    Returns:
+      A tensor of scores of shape (batch_size, max_seq_len, max_seq_len)
+    """
     batchlen, seqlen, rank = batch.size()
     batch = self.dropout(batch)
     proj = torch.mm(self.proj_L, self.proj_R)
@@ -273,6 +292,11 @@ class TwoWordBilinearLabelProbe(Probe):
     return logits
 
 class TwoWordNNLabelProbe(Probe):
+  """ Computes an MLP function of pairs of vectors.
+
+  For a batch of sentences, computes all n^2 pairs of scores
+  for each sentence in the batch.
+  """
   def __init__(self, args):
     print('Constructing TwoWordNNLabelProbe')
     super(TwoWordNNLabelProbe, self).__init__()
@@ -294,6 +318,7 @@ class TwoWordNNLabelProbe(Probe):
     print('Using intermediate size (hidden dim / rank) {}'.format(self.maximum_rank))
 
   def _forward_1(self, batch):
+    """ Computes scores for 1-layer MLP """
     batchlen, seqlen, rank = batch.size()
     batch = self.dropout(batch)
     batch_square = batch.unsqueeze(2).expand(batchlen, seqlen, seqlen, rank)
@@ -305,6 +330,7 @@ class TwoWordNNLabelProbe(Probe):
     return logits
 
   def _forward_2(self, batch):
+    """ Computes scores for 2-layer MLP """
     batchlen, seqlen, rank = batch.size()
     batch = self.dropout(batch)
     batch_square = batch.unsqueeze(2).expand(batchlen, seqlen, seqlen, rank)
@@ -318,6 +344,19 @@ class TwoWordNNLabelProbe(Probe):
     return logits
 
   def forward(self, batch):
+    """ Computes all n^2 pairs of attachment scores
+    for each sentence in a batch.
+
+    Computes W2(relu(W1[h_i;h_j]+b1)+b2 or
+             W3(relu(W2(relu(W1[h_i;h_j]+b1)+b2)+b3
+    for MLP-1, MLP-2, respectively for all i,j.
+
+    Args:
+      batch: a batch of word representations of the shape
+        (batch_size, max_seq_len, representation_dim)
+    Returns:
+      A tensor of scores of shape (batch_size, max_seq_len, max_seq_len)
+    """
     if self.hidden_layers == 2:
       return self._forward_2(batch)
     else:
@@ -325,7 +364,11 @@ class TwoWordNNLabelProbe(Probe):
 
 
 class OneWordLinearLabelProbe(Probe):
+  """ Computes a linear function of pairs of vectors.
 
+  For a batch of sentences, computes all n scores
+  for each sentence in the batch.
+  """
   def __init__(self, args):
     print('Constructing OneWordLinearLabelProbe')
     super(OneWordLinearLabelProbe, self).__init__()
@@ -342,6 +385,20 @@ class OneWordLinearLabelProbe(Probe):
     print('Using intermediate size (hidden dim / rank) {}'.format(self.maximum_rank))
 
   def forward(self, batch):
+    """ Computes all n label logits for each sentence in a batch.
+
+    Computes W2(W1(h_i+b1)+b2 for all i
+    why the two steps? Because
+          W1 in R^{maximum_rank x hidden_dim}, W2 in R^{hidden_dim, maximum_rank}
+    this rank constraint enforces a latent linear space of rank
+    maximum_rank or less.
+
+    Args:
+      batch: a batch of word representations of the shape
+        (batch_size, max_seq_len, representation_dim)
+    Returns:
+      A tensor of logits of shape (batch_size, max_seq_len)
+    """
     batchlen, seqlen, dimension = batch.size()
     batch = self.dropout(batch)
     batch = self.linear1(batch)
@@ -349,6 +406,11 @@ class OneWordLinearLabelProbe(Probe):
     return logits
 
 class OneWordNNLabelProbe(Probe):
+  """ Computes an MLP function of pairs of vectors.
+
+  For a batch of sentences, computes all n scores
+  for each sentence in the batch.
+  """
 
   def __init__(self, args):
     print('Constructing OneWordNNLabelProbe')
@@ -369,6 +431,18 @@ class OneWordNNLabelProbe(Probe):
     print('Using intermediate size (hidden dim / rank) {}'.format(intermediate_size))
 
   def forward(self, batch):
+    """ Computes all n label logits for each sentence in a batch.
+
+    Computes W2(relu(W1[h_i]+b1)+b2 or
+             W3(relu(W2(relu(W1[h_i]+b1)+b2)+b3
+    for MLP-1, MLP-2, respectively for all i
+
+    Args:
+      batch: a batch of word representations of the shape
+        (batch_size, max_seq_len, representation_dim)
+    Returns:
+      A tensor of logits of shape (batch_size, max_seq_len)
+    """
     batchlen, seqlen, dimension = batch.size()
     batch = self.dropout(batch)
     batch = self.initial_linear(batch)
