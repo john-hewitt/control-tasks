@@ -18,7 +18,7 @@ A fork of the [structural probes](https://github.com/john-hewitt/structural-prob
 
 1. Clone the repository.
 
-        git clone https://github.com/john-hewitt/structural-probes/
+        git clone https://github.com/john-hewitt/control-tasks/
         cd structural-probes
         
 1. [Optional] Construct a virtual environment for this project. Only `python3` is supported.
@@ -188,36 +188,25 @@ It can be time-consuming to make nice visualizations and make sense of the resul
   
 - `root_acc`: This reporting method (only used by `parse-depth` tasks) will print to `dev.root_acc` the percentage of sentences where the least-deep word in the gold tree (the root) is also the least-deep according to the predicted depths.
 
+## Experiments on new datasets or models
+In the future I hope to streamline support for plugging in arbitrary PyTorch models in `model.py`, but because of subword models, tokenization, batching etc. this is beyond my current scope.
 
+Right now, the official way to run experiments on new datasets and representation learners is:
 
-## Designing your own experiments
-
-### Data formatting
-
-### Experiments with new probe families
-Perhaps the easiest thing to change about this codebase is the function family used to probe representations.
-
-(TODO; `probe.py`)
-
-### Experiments on new datasets
-
-(TODO; `scripts/raw_to_bert.py`; `data.py`)
-
-### Experiments on new representation learners
-
-(TODO; `scripts/data.py`; `scripts/model.py`)
+1. Have a `conllx` file for the train, dev, and test splits of your dataset.
+1. Write contextual word representations to disk for each of the train, dev, and test split in `hdf5` format, where the index of the sentence in the `conllx` file is the key to the `hdf5` dataset object. That is, your dataset file should look a bit like `{'0': <np.ndarray(size=(1,SEQLEN1,FEATURE_COUNT))>, '1':<np.ndarray(size=(1,SEQLEN1,FEATURE_COUNT))>...}`, etc. Note here that `SEQLEN` for each sentence must be the number of tokens in the sentence as specified by the `conllx` file.
+1. Edit a `config` file from `example/config` to match the paths to your data, as well as the hidden dimension and labels for the columns in the `conllx` file. Look at the experiment config section of this README for more information therein. One potential gotcha is that you _must_ have an `xpos_sentence` field in your conllx (as labeled by your yaml config) since this will be used at evaluation time. 
 
 ## Citation
 
 If you use this repository, please cite:
 
-      @InProceedings{hewitt2019structural,
-        author =      "Hewitt, John and Manning, Christopher D.",
-        title =       "A Structural Probe for Finding Syntax in Word Representations",
-        booktitle =   "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 2 (Short Papers)",
+      @InProceedings{hewitt2019designing,
+        author =      "Hewitt, John and Liang, Percy",
+        title =       "Designing and Interpreting Probes with Control Tasks",
+        booktitle =   "Conference on Empirical Methods in Natural Language Processing",
         year =        "2019",
         publisher =   "Association for Computational Linguistics",
-        location =    "Minneapolis, USA",
+        location =    "Hong Kong",
       }
 
-        
