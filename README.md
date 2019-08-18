@@ -1,10 +1,13 @@
-<p align="center">
-  <img src="doc-assets/header.png" width="550" title="hover text" alt="A vector space and a parse tree representing the same info.">
-</p>
+
 
 # control-tasks
 
+  <img src="doc-assets/confounder.png" width="300" title="hover text" alt="A vector space and a parse tree representing the same info." align="right">
+
+
 Repository describing example random control tasks for designing and understanding neural probes
+
+
 
 A fork of the [structural probes](https://github.com/john-hewitt/structural-probes) codebase. Added are:
 
@@ -209,4 +212,3 @@ If you use this repository, please cite:
         publisher =   "Association for Computational Linguistics",
         location =    "Hong Kong",
       }
-
