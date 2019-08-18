@@ -2,9 +2,17 @@
   <img src="doc-assets/header.png" width="550" title="hover text" alt="A vector space and a parse tree representing the same info.">
 </p>
 
-# structural-probes
+# control-tasks
 
-Simple, extensible codebase for testing whether hidden states of neural networks encode discrete structures.
+Repository describing example random control tasks for designing and understanding neural probes
+
+A fork of the [structural probes](https://github.com/john-hewitt/structural-probes) codebase. Added are:
+
+ - part-of-speech tagging task and families of probes (linear, MLP).
+ - Random control task for part-of-speech tagging.
+ - dependency edge prediction task and families of probes (bilinear, MLP)
+ - Random control task for dependency edge prediction.
+ - Options to use dropout, weight decay, matrix rank constraints, hidden state size constraints, and limited numbers of gradient steps for regularizing probes.
 
 ## Installing & Getting Started
 
