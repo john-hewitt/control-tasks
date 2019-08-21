@@ -253,7 +253,8 @@ class CorruptedEdgePositionTask(Task):
   def _register_type(self, tup):
     if tup not in self.label_dict:
       #a = torch.tensor(np.random.choice(PTB_TRAIN_EMPIRICAL_DEP_SEQ_LEN_dists, p=PTB_TRAIN_EMPIRICAL_DEP_SEQ_LEN_probs))
-      a = torch.tensor(int(np.random.choice([-1,0,1,2], p=[0.25,0.25,0.25,0.25])))
+      #a = torch.tensor(int(np.random.choice([-1,0,1,2], p=[0.25,0.25,0.25,0.25])))
+      a = torch.tensor(int(np.random.choice([0,1,2], p=[1/3,1/3,1/3])))
       self.label_dict[tup] = a
     return self.label_dict[tup]
 
@@ -292,9 +293,9 @@ class CorruptedEdgePositionTask(Task):
     for i, word_i in enumerate(observation.sentence):
       if word_i in self.label_dict:
         #modified_head_indices[i] = max(min(i + self.label_dict[word_i], len(observation.sentence)-1),0)
-        if self.label_dict[word_i] == -1:
-           modified_head_indices[i] = root_index
-        elif self.label_dict[word_i] == 0:
+        #if self.label_dict[word_i] == -1:
+        #   modified_head_indices[i] = root_index
+        if self.label_dict[word_i] == 0:
            modified_head_indices[i] = i
         elif self.label_dict[word_i] == 1:
            modified_head_indices[i] = 0
