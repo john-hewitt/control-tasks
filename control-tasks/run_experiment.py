@@ -302,6 +302,9 @@ def setup_new_experiment_dir(args, yaml_args, reuse_results_path, embeddings_pat
       args.train_probe = 0
       tqdm.write('Setting train_probe to 0 to avoid squashing old params; '
           'explicitly set to 1 to override.')
+  elif 'fixed_directory' in yaml_args['reporting']:
+    new_root = os.path.join(yaml_args['reporting']['root'], yaml_args['reporting']['fixed_directory'])
+    tqdm.write('Constructing new results directory at {}'.format(new_root))
   else:
     new_root = os.path.join(yaml_args['reporting']['root'], model_suffix + '-' + date_suffix +'/' )
     tqdm.write('Constructing new results directory at {}'.format(new_root))
