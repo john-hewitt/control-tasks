@@ -7,6 +7,7 @@ Takes the filepath at sys.argv[1]; writes to stdout
 """
 
 import argparse
+import sys
 argp = argparse.ArgumentParser()
 argp.add_argument('input_conll_filepath')
 args = argp.parse_args()
