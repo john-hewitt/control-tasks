@@ -169,4 +169,3 @@ print(default_2hid_tex_line)
 
 print('\\bottomrule')
 print('\\end{tabular}')
-
