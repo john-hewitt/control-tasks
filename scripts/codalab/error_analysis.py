@@ -74,8 +74,7 @@ if __name__ == '__main__':
   confusion_two_matrix = torch.load(args.confusion_two_filepath) 
   keep_count = 45
   
-  confusion_matrix = (confusion_one_matrix - confusion_two_matrix)/5
-  print(torch.sum(torch.abs(confusion_matrix/2)))
+  confusion_matrix = (confusion_one_matrix - confusion_two_matrix)/10
   # Choose gold POS tags for summary
   biggest_diffs = torch.sum(torch.abs(confusion_matrix), 1)
   gold_biggest_diff_indices = torch.argsort(-biggest_diffs)[:keep_count]
@@ -116,7 +115,6 @@ if __name__ == '__main__':
   color2 = next(palette)
   for i in range(keep_count):
     for j in range(keep_count):
-      print(keep_count)
       c = confusion_matrix[j,i]
       color = color1 if (i==j and c>0) or (i!=j and c<0) else color2
       ax.text(i, j, "{0:.2f}".format(c), va='center', ha='center',fontsize=10, color=color, fontweight='bold')
