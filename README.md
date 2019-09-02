@@ -3,7 +3,7 @@
 Repository describing example random control tasks for designing and understanding neural probes
 
 
-  <img src="doc-assets/confounder.png" width="300" title="hover text" alt="A vector space and a parse tree representing the same info." align="right">
+  <img src="doc-assets/confounder.png" width="300" title="hover text" alt="Diagram depicting how linguistic task accuracy can be due either to representation or probe." align="right">
 
 Based on the paper [Designing and Interpreting Probes with Control Tasks](#).
 
