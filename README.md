@@ -115,14 +115,12 @@ model:
 
 ### Probe, probe-training
  - `task_signature`: Specifies the function signature of the task.
- Currently, can be either `word`, for parse depth (or perhaps labeling) tasks; or `word_pair` for parse distance tasks.
- - `task_name`: A unique name for each task supported by the repository. Right now, this includes `parse-depth` and `parse-distance`.
+ Currently, can be either `word_label`, for part-of-speech tagging tasks; or `word_pair_label` for dependency edge prediction tasks.
+ - `task_name`: A unique name for each task supported by the repository. Right now, this includes `corrupted-part-of-speech` (for part-of-speech tagging and its control task) and `corrupted-edge-labels` for dependency edge prediction and its control task.
  - `maximum_rank`: Specifies the dimensionality of the space to be projected into, if `psd_parameters=True`.
    The projection matrix is of shape (hidden_dim, maximum_rank).
    The rank of the subspace is upper-bounded by this value.
    If `psd_parameters=False`, then this is ignored.
- - `psd_parameters`: though not reported in the paper, the `parse_distance` and `parse_depth` tasks can be accomplished with a non-PSD matrix inside the quadratic form.
-   All experiments for the paper were run with `psd_parameters=True`, but setting `psd_parameters=False` will simply construct a square parameter matrix. See the docstring of `probe.TwoWordNonPSDProbe` and `probe.OneWordNonPSDProbe` for more info. 
  - `diagonal`: Ignored.
  - `hidden_layers`: Number of hidden layers in the probe network, for part-of-speech tagging and its control task. Marking `0` means a linear model; `1` means an MLP with one hidden layer, `2` an MLP with 2 hidden layers.
  - `dropout`: Dropout percent to be applied at the input embeddings and at any hidden layer during training.
@@ -132,7 +130,7 @@ model:
  - `epochs`: The maximum number of epochs to which to train the probe. 
    (Regardless, early stopping is performed on the development loss.)
  - `loss`: A string to specify the loss class. Right now, `cross-entropy` is available for labeling tasks.
-    The class within `loss.py` will be specified by a combination of this and the task name, since for example distances and depths have different special requirements for their loss functions.
+    The class within `loss.py` will be specified by a combination of this and the task name.
  - `weight_decay`: Weight decay (L2 regularization) to be applied during training.
 ```
 probe:
