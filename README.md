@@ -1,6 +1,7 @@
 
 # control-tasks
-Repository describing example random control tasks for designing and interpreting neural probes
+Repository describing example random control tasks for designing and interpreting neural probes.
+Control tasks complement linguistic tasks when probing neural models by helping researchers come to an understanding of the ability of a probe to memorize, for each unique word, a randomly chosen output -- and apply this output regardless of context.
 
 
   <img src="doc-assets/confounder.png" width="300" title="hover text" alt="Diagram depicting how linguistic task accuracy can be due either to representation or probe." align="right">
