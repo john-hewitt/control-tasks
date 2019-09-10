@@ -12,17 +12,18 @@ dataset:
      - extra_info
      - embeddings
   corpus:
-    root: /u/scr/nlp/johnhew/data/lstm-word-order/ptb-wsj-sd/
-    train_path: ptb3-wsj-train.conllx
-    dev_path: ptb3-wsj-dev.conllx
-    test_path: ptb3-wsj-test.conllx
+    root: example/data/en_ewt-ud-sample/
+    train_path: en_ewt-ud-train.conllu
+    dev_path: en_ewt-ud-dev.conllu
+    test_path: en_ewt-ud-test.conllu
   embeddings:
     type: token #{token,subword}
-    root: /u/scr/nlp/johnhew/data/lstm-word-order/ptb-wsj-sd/
-    train_path: raw.train.elmo-layers.hdf5
-    dev_path: raw.dev.elmo-layers.hdf5
-    test_path: raw.test.elmo-layers.hdf5
-  batch_size: 40
+    root: example/data/en_ewt-ud-sample/ 
+    train_path: en_ewt-ud-train.elmo-layers.hdf5
+    dev_path: en_ewt-ud-dev.elmo-layers.hdf5
+    test_path: en_ewt-ud-test.elmo-layers.hdf5
+  batch_size: 20
+  dataset_size: 40000
 model:
   hidden_dim: 1024 # ELMo hidden dim
   #embedding_dim: 1024 # ELMo word embedding dim
@@ -30,17 +31,22 @@ model:
   use_disk: True
   model_layer: 1 # BERT-base: {1,...,12}; ELMo: {1,2,3}
 probe:
-  task_signature: word_pair # word, word_pair
-  task_name: parse-distance
-  maximum_rank: 128
+  task_signature: word_label # word, word_pair
+  task_name: corrupted-part-of-speech
+  maximum_rank: 1000
   psd_parameters: True
   diagonal: False
+  hidden_layers: 0
+  dropout: 0
   params_path: predictor.params
+  misc:
+    corrupted_token_percent: 0.0
 probe_training:
   epochs: 40
-  loss: L1
+  loss: cross-entropy
+  weight_decay: 0.0
 reporting:
-  root: example/results
+  root: .
   observation_paths:
     train_path: train.observations
     dev_path: dev.observations
@@ -50,6 +56,4 @@ reporting:
     dev_path: dev.predictions
     test_path: test.predictions
   reporting_methods:
-    - spearmanr
-    - image_examples
-    - uuas
+    - label_accuracy
