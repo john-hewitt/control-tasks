@@ -1,6 +1,6 @@
 
 # control-tasks
-Repository describing example random control tasks for designing and understanding neural probes
+Repository describing example random control tasks for designing and interpreting neural probes
 
 
   <img src="doc-assets/confounder.png" width="300" title="hover text" alt="Diagram depicting how linguistic task accuracy can be due either to representation or probe." align="right">
