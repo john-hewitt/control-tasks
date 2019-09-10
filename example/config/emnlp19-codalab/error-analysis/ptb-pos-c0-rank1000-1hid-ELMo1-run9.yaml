@@ -42,13 +42,15 @@ probe:
   misc:
     rand_label_condition_length: 1
     corrupted_token_percent: 0.0
+  probe_spec:
+    probe_hidden_layers: 1
 probe_training:
   epochs: 40
   loss: cross-entropy
   weight_decay: 0.0
 reporting:
   root: .
-  fixed_directory: error_analysis_linear_run_2
+  fixed_directory: error_analysis_mlp_run_9
   observation_paths:
     train_path: train.observations
     dev_path: dev.observations

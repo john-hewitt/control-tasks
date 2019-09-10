@@ -48,7 +48,7 @@ probe_training:
   weight_decay: 0.0
 reporting:
   root: .
-  fixed_directory: error_analysis_linear_run_2
+  fixed_directory: error_analysis_linear_run_7
   observation_paths:
     train_path: train.observations
     dev_path: dev.observations
