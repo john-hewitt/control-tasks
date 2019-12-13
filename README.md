@@ -45,8 +45,8 @@ This repo is a fork of the [structural probes](https://github.com/john-hewitt/st
 
 1. Run an experiment using an example experiment configuration for a linguistic task, as well as a control task, and take a look at the resultant reporting!
 
-        python structural-probes/run_experiment.py example/config/en_ewt-pos-corrupted0-rank1000-0hid-ELMo1.yaml
-        python structural-probes/run_experiment.py example/config/en_ewt-pos-corrupted1-rank1000-0hid-ELMo1.yaml
+        python control-tasks/run_experiment.py example/config/en_ewt-pos-corrupted0-rank1000-0hid-ELMo1.yaml
+        python control-tasks/run_experiment.py example/config/en_ewt-pos-corrupted1-rank1000-0hid-ELMo1.yaml
         
    The path to a new directory containing the results of the experiment will be in the first few lines of the logging output of the script. Once you're there, you'll see `dev.label_acc`, reporting the labeling accuracy for the experiment.
    We'll go over this later, but `corrupted0` or `c0` means that the task is a linguistic task, and `corrupted1` or `c1` means the task is a control task. 
