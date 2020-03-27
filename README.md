@@ -1,10 +1,11 @@
+<p align="center">
+  <img src="doc-assets/confounder2.png" width="750" title="hover text" alt="The probe confounder problem: what causes high probe accuracy?">
+</p>
+
 
 # control-tasks
 Repository describing example random control tasks for designing and interpreting neural probes.
 Control tasks complement linguistic tasks when probing neural models by helping researchers come to an understanding of the ability of a probe to memorize, for each unique word, a randomly chosen output -- and apply this output regardless of context.
-
-
-  <img src="doc-assets/confounder.png" width="300" title="hover text" alt="Diagram depicting how linguistic task accuracy can be due either to representation or probe." align="right">
 
 Based on the paper [Designing and Interpreting Probes with Control Tasks](#).
 
