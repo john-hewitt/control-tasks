@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="doc-assets/confounder2.png" width="750" title="hover text" alt="The probe confounder problem: what causes high probe accuracy?">
+  <img src="doc-assets/confounder2.png" width="700" title="hover text" alt="The probe confounder problem: what causes high probe accuracy?">
 </p>
 
 
